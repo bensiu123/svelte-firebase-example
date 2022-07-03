@@ -30,6 +30,10 @@ npm run dev
   - changing `load` in `/admin` to run in client side may solve the problem, but un-authorized user may get into `/admin` page.
 - add `__error.svelte` page
 
+## To-do
+
+- deploy on Firebase Hosting (static) or Functions (SSR)
+
 ## Comments on Svelte and Svelte-kit
 
 - Really convenient to have html, css, js combined in one `.svelte` file.
@@ -41,4 +45,3 @@ npm run dev
 
 - VS Code reference lookup is not yet supported in `.svelte` files.
 - No auto-closing for tags like `{#if}` and `{#each}` in `.svelte`.
-
