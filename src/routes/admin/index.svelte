@@ -5,19 +5,18 @@
 	import type { Load } from '@sveltejs/kit';
 
 	export const load: Load = async ({ session }) => {
-		// const { user } = session;
+		const { user } = session;
+		// const { currentUser: user } = auth;
 
-		// if (!user) return { status: 302, redirect: '/auth/login' };
-		// if (typeof user?.uid !== 'string') return { status: 302, redirect: '/auth/login' };
+		console.log('user', user);
 
-		const { currentUser: user } = auth;
-		console.log(user);
 		if (!user) return { status: 302, redirect: '/auth/login' };
+		// if (!user) return { status: 200, props: { blogs: [] } };
 
 		const q = query(blogCollection, where('owner', '==', user.uid));
 		const querySnapshot = await getDocs(q);
 
-		let blogs: BlogWithId[] = [];
+		const blogs: BlogWithId[] = [];
 		querySnapshot.forEach((blog) => {
 			blogs.push({ ...blog.data(), id: blog.id });
 		});

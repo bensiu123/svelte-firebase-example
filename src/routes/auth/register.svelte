@@ -11,23 +11,24 @@
 
 	const signUp = async (event: CustomEvent<Events['signup']>) => {
 		try {
-			const user = await createUserWithEmailAndPassword(
+			const userCredential = await createUserWithEmailAndPassword(
 				auth,
 				event.detail.email,
 				event.detail.password
 			);
 
-			await updateProfile(user.user, { displayName: event.detail.username });
+			await updateProfile(userCredential.user, { displayName: event.detail.username });
 
 			if (!auth.currentUser) throw new Error('User is not logged in');
 			await setDoc(userDoc(auth.currentUser.uid), {
-				username: user.user.displayName,
-				email: user.user.email
+				username: userCredential.user.displayName,
+				email: userCredential.user.email
 			});
 
 			await goto('/admin');
 		} catch (e) {
 			console.log('error from creating user', e);
+			if (e instanceof Error) errors.push(e.message);
 		}
 	};
 </script>

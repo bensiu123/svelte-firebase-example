@@ -26,6 +26,7 @@ npm run dev
 ## Issues to be fixed
 
 - in `/admin` page, the `session.user` is `undefined` (and `auth.currentUser` is `null` as well) at the beginning, cause it failed to load `user.uid`.
+  - moved navigation logic to `onMount` in `__layout.svelte`. It works but if user get into `/admin` directly, they will be redirected `/auth/login` first and then `/admin` page.
 - add `__error.svelte` page
 
 ## Comments on Svelte and Svelte-kit
@@ -39,3 +40,4 @@ npm run dev
 
 - VS Code reference lookup is not yet supported in `.svelte` files.
 - No auto-closing for tags like `{#if}` and `{#each}` in `.svelte`.
+

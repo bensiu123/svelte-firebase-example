@@ -10,7 +10,7 @@ declare global {
 		// interface Locals {}
 		// interface Platform {}
 		interface Session {
-			user: User | null;
+			user: User | null | undefined;
 		}
 		// interface Stuff {}
 	}

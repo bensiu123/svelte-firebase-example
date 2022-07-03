@@ -2,11 +2,10 @@
 	import 'carbon-components-svelte/css/white.css';
 	import Nav from '$lib/nav.svelte';
 	import { onAuthStateChanged } from 'firebase/auth';
-	import { navigating } from '$app/stores';
 	import { onMount } from 'svelte';
 	import { auth } from '$lib/firebase';
 	import { getStores } from '$app/stores';
-	import { Loading } from 'carbon-components-svelte';
+	import { goto } from '$app/navigation';
 
 	let { session } = getStores();
 	onMount(() => {
@@ -14,9 +13,11 @@
 			auth,
 			(user) => {
 				session.set({ user });
+				goto('/admin');
 			},
 			(error) => {
 				session.set({ user: null });
+				goto('/auth/login');
 				console.error(error);
 			}
 		);
