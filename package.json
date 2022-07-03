@@ -16,15 +16,19 @@
 	"devDependencies": {
 		"@playwright/test": "^1.22.2",
 		"@sveltejs/adapter-auto": "next",
+		"@sveltejs/adapter-node": "^1.0.0-next.78",
+		"@sveltejs/adapter-static": "^1.0.0-next.34",
 		"@sveltejs/kit": "next",
 		"@typescript-eslint/eslint-plugin": "^5.27.0",
 		"@typescript-eslint/parser": "^5.27.0",
+		"carbon-components-svelte": "^0.67.0",
 		"eslint": "^8.16.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^4.0.0",
 		"prettier": "^2.6.2",
 		"prettier-plugin-svelte": "^2.7.0",
 		"svelte": "^3.44.0",
+		"svelte-adapter-firebase": "^0.14.1",
 		"svelte-check": "^2.7.1",
 		"svelte-preprocess": "^4.10.6",
 		"tslib": "^2.3.1",
@@ -32,7 +36,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"carbon-components-svelte": "^0.67.0",
 		"firebase": "^9.8.4"
 	}
 }
