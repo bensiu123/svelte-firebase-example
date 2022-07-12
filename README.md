@@ -6,6 +6,8 @@ It is a project for learning and practicing svelte and svelte-kit.
 
 This project mainly follows instruction from [Building CRUD application svelte firebase](https://blog.logrocket.com/building-crud-application-svelte-firebase/), with all code being changed to TypeScript to have a better understanding on the mechanism.
 
+Query on blog posts are modified to be realtime update. It is to test the firebase firestore realtime update `onSnapshot` feature.
+
 In this project, `carbon-components-svelte` is used as UI component library.
 
 ## Features
@@ -14,6 +16,7 @@ In this project, `carbon-components-svelte` is used as UI component library.
 - Sign-in, register with `firebase/auth`: `signInWithEmailAndPassword` & `createUserWithEmailAndPassword`
 - Store user profile in firestore
 - CRUD blog post in firestore
+- realtime update blog post list and details from firestore
 
 ## Getting Started
 

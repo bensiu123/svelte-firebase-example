@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { addDoc, serverTimestamp } from 'firebase/firestore/lite';
+	import { addDoc, serverTimestamp } from 'firebase/firestore';
 	import { auth, blogCollection } from '$lib/firebase';
 	import BlogForm from '$lib/blog/blog-form.svelte';
 	import type { Blog } from '$lib/types/blog';

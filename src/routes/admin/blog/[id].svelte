@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import { getDoc } from 'firebase/firestore/lite';
+	import { getDoc, onSnapshot } from 'firebase/firestore';
 	import { blogDoc } from '$lib/firebase';
 	import type { Load } from '@sveltejs/kit';
 	import type { BlogWithId } from '$lib/types/blog';
@@ -19,6 +19,14 @@
 
 <script lang="ts">
 	export let blog: BlogWithId | null = null;
+	if (blog) {
+		const doc = blogDoc(blog?.id);
+		onSnapshot(doc, (snap) => {
+			if (snap.exists()) {
+				blog = { ...snap.data(), id: snap.id };
+			}
+		});
+	}
 </script>
 
 <svelte:head>

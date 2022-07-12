@@ -6,5 +6,10 @@ export type Events = {
 		summary: string;
 		description: string;
 	};
+	realtimeUpdateBlogDetails: {
+		title: string;
+		summary: string;
+		description: string;
+	};
 	deleteBlog: { id: string };
 };

@@ -4,7 +4,7 @@
 	import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 	import { goto } from '$app/navigation';
 	import { auth, userDoc } from '$lib/firebase';
-	import { setDoc } from 'firebase/firestore/lite';
+	import { setDoc } from 'firebase/firestore';
 	import type { Events } from '$lib/types/events';
 
 	let errors: string[] = [];

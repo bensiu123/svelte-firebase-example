@@ -3,6 +3,7 @@
 
 	import { Form, TextArea, TextInput, Button } from 'carbon-components-svelte';
 	import { createEventDispatcher } from 'svelte';
+	import { debounce } from 'lodash';
 
 	export let title = '',
 		summary = '',
@@ -16,6 +17,14 @@
 		summary = '';
 		description = '';
 	};
+
+	const realtimeUpdateBlogDetails = () => {
+		dispatch('realtimeUpdateBlogDetails', { title, summary, description });
+	};
+
+	const debouncedRealtimeUpdate = debounce(realtimeUpdateBlogDetails, 1000);
+
+	$: (title || summary || description) && debouncedRealtimeUpdate();
 </script>
 
 <div class="form-container">

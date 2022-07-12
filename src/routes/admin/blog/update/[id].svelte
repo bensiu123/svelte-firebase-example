@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import { getDoc, setDoc } from 'firebase/firestore/lite';
+	import { getDoc, setDoc } from 'firebase/firestore';
 	import { blogDoc } from '$lib/firebase';
 	import type { Load } from '@sveltejs/kit';
 	import type { BlogWithId } from '$lib/types/blog';
@@ -19,13 +19,22 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import BlogForm from '$lib/blog/blog-form.svelte';
+
 	import type { Events } from '$lib/types/events';
 
 	export let blog: BlogWithId;
 
 	const updateBlogDetails = async (event: CustomEvent<Events['sendBlogDetails']>) => {
+		console.log('updateBlogDetails', event.detail);
 		setDoc(blogDoc(blog.id), event.detail, { merge: true });
 		await goto('/admin');
+	};
+
+	const realtimeUpdateBlogDetails = async (
+		event: CustomEvent<Events['realtimeUpdateBlogDetails']>
+	) => {
+		console.log('realtimeUpdateBlogDetails', event.detail);
+		setDoc(blogDoc(blog.id), event.detail, { merge: true });
 	};
 </script>
 
@@ -39,6 +48,7 @@
 	</div>
 	<BlogForm
 		on:sendBlogDetails={updateBlogDetails}
+		on:realtimeUpdateBlogDetails={realtimeUpdateBlogDetails}
 		title={blog.title}
 		summary={blog.summary}
 		description={blog.description}

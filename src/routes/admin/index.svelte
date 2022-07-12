@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-	import { deleteDoc, getDocs, query, where } from 'firebase/firestore/lite';
+	import { deleteDoc, getDocs, onSnapshot, query, where } from 'firebase/firestore';
 	import { auth, blogCollection, blogDoc } from '$lib/firebase';
 	import type { BlogWithId } from '$lib/types/blog';
 	import type { Load } from '@sveltejs/kit';
@@ -21,6 +21,12 @@
 			blogs.push({ ...blog.data(), id: blog.id });
 		});
 
+		blogs.sort((a, b) => {
+			if (a.createdAt > b.createdAt) return -1;
+			if (a.createdAt < b.createdAt) return 1;
+			return 0;
+		});
+
 		return { status: 200, props: { blogs } };
 	};
 </script>
@@ -28,8 +34,30 @@
 <script lang="ts">
 	import BlogCard from '$lib/blog/blog-card.svelte';
 	import type { Events } from '$lib/types/events';
+	import type { User } from 'firebase/auth';
+	import { get } from 'svelte/store';
+	import { session } from '$app/stores';
 
 	export let blogs: BlogWithId[] = [];
+	// export let user: User;
+	const { user } = get(session);
+
+	const q = query(blogCollection, where('owner', '==', user!.uid));
+
+	onSnapshot(q, (querySnapshot) => {
+		const newBlogs: BlogWithId[] = [];
+		querySnapshot.forEach((blog) => {
+			newBlogs.push({ ...blog.data(), id: blog.id });
+		});
+		blogs = newBlogs;
+	});
+
+	$: blogs &&
+		blogs.sort((a, b) => {
+			if (a.createdAt > b.createdAt) return -1;
+			if (a.createdAt < b.createdAt) return 1;
+			return 0;
+		});
 
 	const deleteBlog = async (event: CustomEvent<Events['deleteBlog']>) => {
 		await deleteDoc(blogDoc(event.detail.id));

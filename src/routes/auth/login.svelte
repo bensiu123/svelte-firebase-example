@@ -4,7 +4,7 @@
 	import { signInWithEmailAndPassword } from 'firebase/auth';
 	import { auth, userDoc } from '$lib/firebase';
 	import { goto } from '$app/navigation';
-	import { setDoc } from 'firebase/firestore/lite';
+	import { setDoc } from 'firebase/firestore';
 	import type { Events } from '$lib/types/events';
 
 	let error: string = '';

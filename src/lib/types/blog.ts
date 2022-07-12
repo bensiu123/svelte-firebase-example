@@ -1,5 +1,5 @@
 import type { UserInfo } from 'firebase/auth';
-import type { FieldValue } from 'firebase/firestore/lite';
+import type { FieldValue } from 'firebase/firestore';
 
 export type Blog = {
 	title: string;
