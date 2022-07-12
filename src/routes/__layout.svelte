@@ -12,6 +12,7 @@
 		onAuthStateChanged(
 			auth,
 			(user) => {
+				console.log('onAuthStateChanged', user);
 				session.set({ user });
 				goto('/admin');
 			},

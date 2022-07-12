@@ -4,53 +4,62 @@
 	import type { BlogWithId } from '$lib/types/blog';
 	import type { Load } from '@sveltejs/kit';
 
-	export const load: Load = async ({ session }) => {
-		const { user } = session;
-		// const { currentUser: user } = auth;
+	// export const load: Load = async ({ session }) => {
+	// 	const { user } = session;
+	// 	// const { currentUser: user } = auth;
 
-		console.log('user', user);
+	// 	console.log('user', user);
 
-		if (!user) return { status: 302, redirect: '/auth/login' };
-		// if (!user) return { status: 200, props: { blogs: [] } };
+	// 	if (!user) return { status: 302, redirect: '/auth/login' };
+	// 	// if (!user) return { status: 200, props: { blogs: [] } };
 
-		const q = query(blogCollection, where('owner', '==', user.uid));
-		const querySnapshot = await getDocs(q);
+	// 	const q = query(blogCollection, where('owner', '==', user.uid));
+	// 	const querySnapshot = await getDocs(q);
 
-		const blogs: BlogWithId[] = [];
-		querySnapshot.forEach((blog) => {
-			blogs.push({ ...blog.data(), id: blog.id });
-		});
+	// 	const blogs: BlogWithId[] = [];
+	// 	querySnapshot.forEach((blog) => {
+	// 		blogs.push({ ...blog.data(), id: blog.id });
+	// 	});
 
-		blogs.sort((a, b) => {
-			if (a.createdAt > b.createdAt) return -1;
-			if (a.createdAt < b.createdAt) return 1;
-			return 0;
-		});
+	// 	blogs.sort((a, b) => {
+	// 		if (a.createdAt > b.createdAt) return -1;
+	// 		if (a.createdAt < b.createdAt) return 1;
+	// 		return 0;
+	// 	});
 
-		return { status: 200, props: { blogs } };
-	};
+	// 	return { status: 200, props: { blogs } };
+	// };
 </script>
 
 <script lang="ts">
 	import BlogCard from '$lib/blog/blog-card.svelte';
 	import type { Events } from '$lib/types/events';
 	import type { User } from 'firebase/auth';
-	import { get } from 'svelte/store';
 	import { session } from '$app/stores';
 
 	export let blogs: BlogWithId[] = [];
-	// export let user: User;
-	const { user } = get(session);
+	export let user: User | null | undefined;
+	// const { user } = get(session);
 
-	const q = query(blogCollection, where('owner', '==', user!.uid));
-
-	onSnapshot(q, (querySnapshot) => {
-		const newBlogs: BlogWithId[] = [];
-		querySnapshot.forEach((blog) => {
-			newBlogs.push({ ...blog.data(), id: blog.id });
-		});
-		blogs = newBlogs;
+	session.subscribe((session) => {
+		user = session.user;
 	});
+
+	$: console.log('admin page', user);
+
+	$: user && onUserChange(user);
+
+	const onUserChange = (user: User) => {
+		const q = query(blogCollection, where('owner', '==', user!.uid));
+
+		onSnapshot(q, (querySnapshot) => {
+			const newBlogs: BlogWithId[] = [];
+			querySnapshot.forEach((blog) => {
+				newBlogs.push({ ...blog.data(), id: blog.id });
+			});
+			blogs = newBlogs;
+		});
+	};
 
 	$: blogs &&
 		blogs.sort((a, b) => {

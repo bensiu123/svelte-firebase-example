@@ -28,10 +28,10 @@ npm run dev
 
 ## Issues to be fixed
 
-- in `/admin` page, the `session.user` is `undefined` (and `auth.currentUser` is `null` as well) at the beginning, cause it failed to load `user.uid`.
-  - moved navigation logic to `onMount` in `__layout.svelte`. It works but if user get into `/admin` directly, they will be redirected `/auth/login` first and then `/admin` page.
-  - changing `load` in `/admin` to run in client side may solve the problem, but un-authorized user may get into `/admin` page.
-- add `__error.svelte` page
+- [x] in `/admin` page, the `session.user` is `undefined` (and `auth.currentUser` is `null` as well) at the beginning, cause it failed to load `user.uid`.
+  - [x] moved navigation logic to `onMount` in `__layout.svelte`. It works but if user get into `/admin` directly, they will be redirected `/auth/login` first and then `/admin` page.
+  - [x] changing `load` in `/admin` to run in client side may solve the problem, but un-authorized user may get into `/admin` page. It also loses benefit of SSR.
+- [ ] add `__error.svelte` page
 
 ## To-do
 
