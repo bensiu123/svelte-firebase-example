@@ -3,7 +3,7 @@
 
 	import { Form, TextArea, TextInput, Button } from 'carbon-components-svelte';
 	import { createEventDispatcher } from 'svelte';
-	import { debounce } from 'lodash';
+	import { debounce } from 'lodash-es';
 
 	export let title = '',
 		summary = '',

@@ -20,6 +20,7 @@
 		"@sveltejs/adapter-static": "^1.0.0-next.34",
 		"@sveltejs/kit": "next",
 		"@types/lodash": "^4.14.182",
+		"@types/lodash-es": "^4.17.6",
 		"@typescript-eslint/eslint-plugin": "^5.27.0",
 		"@typescript-eslint/parser": "^5.27.0",
 		"carbon-components-svelte": "^0.67.0",
@@ -38,6 +39,6 @@
 	"type": "module",
 	"dependencies": {
 		"firebase": "^9.8.4",
-		"lodash": "^4.17.21"
+		"lodash-es": "^4.17.21"
 	}
 }
