@@ -5,19 +5,17 @@
 
 	import type { Events } from '$lib/types/events';
 	import { onMount } from 'svelte';
-	import { onSnapshot, setDoc } from 'firebase/firestore';
-	import type { BlogWithId } from '$lib/types/blog';
+	import { onSnapshot } from 'firebase/firestore';
+	import type { Blog } from '$lib/types/blog';
 	import { blogDoc } from '$lib/firebase';
+	import { FireDoc } from '$lib/store/firestore';
 
-	let blog: BlogWithId | null = null;
+	let blog: FireDoc<Blog>;
 
 	const subscribeToBlog = async (id: string) => {
 		const doc = blogDoc(id);
-		return onSnapshot(doc, (snap) => {
-			if (snap.exists()) {
-				blog = { ...snap.data(), id: snap.id };
-			}
-		});
+		blog = new FireDoc(doc);
+		return blog.unsubscribe;
 	};
 
 	onMount(() => {
@@ -30,7 +28,7 @@
 	const updateBlogDetails = async (event: CustomEvent<Events['sendBlogDetails']>) => {
 		if (!blog) return;
 		console.log('updateBlogDetails', event.detail);
-		setDoc(blogDoc(blog.id), event.detail, { merge: true });
+		blog?.set(event.detail);
 		await goto('/admin');
 	};
 
@@ -39,7 +37,7 @@
 	) => {
 		if (!blog) return;
 		console.log('realtimeUpdateBlogDetails', event.detail);
-		setDoc(blogDoc(blog.id), event.detail, { merge: true });
+		blog?.set(event.detail);
 	};
 </script>
 
@@ -51,13 +49,13 @@
 	<div class="header">
 		<h2>Update blog</h2>
 	</div>
-	{#if blog}
+	{#if $blog}
 		<BlogForm
 			on:sendBlogDetails={updateBlogDetails}
 			on:realtimeUpdateBlogDetails={realtimeUpdateBlogDetails}
-			title={blog.title}
-			summary={blog.summary}
-			description={blog.description}
+			title={$blog.title}
+			summary={$blog.summary}
+			description={$blog.description}
 		/>
 	{:else}
 		<div class="center">

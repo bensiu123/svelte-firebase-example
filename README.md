@@ -18,6 +18,7 @@ In this project, `carbon-components-svelte` is used as UI component library.
 - CRUD blog post in firestore
 - realtime update blog post list and details from firestore
 - deployed to Firebase Hosting with Static-site Generation
+- class `FireDoc` in `$lib/store/firebase.ts`: a `Writable` store for firestore document handling snapshot subscription, and also provide a method to update the document
 
 ## Getting Started
 
