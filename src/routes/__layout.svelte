@@ -1,4 +1,5 @@
 <script lang="ts">
+	import 'normalize.css';
 	import 'carbon-components-svelte/css/white.css';
 	import Nav from '$lib/nav.svelte';
 	import { onAuthStateChanged } from 'firebase/auth';
@@ -12,6 +13,10 @@
 		onAuthStateChanged(
 			auth,
 			(user) => {
+				if (!user) {
+					session.set({ user: null });
+					return goto('/auth/login');
+				}
 				console.log('onAuthStateChanged', user);
 				session.set({ user });
 				goto('/admin');

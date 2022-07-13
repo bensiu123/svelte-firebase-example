@@ -1,37 +1,7 @@
-<script lang="ts" context="module">
-	import { deleteDoc, getDocs, onSnapshot, query, where } from 'firebase/firestore';
-	import { auth, blogCollection, blogDoc } from '$lib/firebase';
-	import type { BlogWithId } from '$lib/types/blog';
-	import type { Load } from '@sveltejs/kit';
-
-	// export const load: Load = async ({ session }) => {
-	// 	const { user } = session;
-	// 	// const { currentUser: user } = auth;
-
-	// 	console.log('user', user);
-
-	// 	if (!user) return { status: 302, redirect: '/auth/login' };
-	// 	// if (!user) return { status: 200, props: { blogs: [] } };
-
-	// 	const q = query(blogCollection, where('owner', '==', user.uid));
-	// 	const querySnapshot = await getDocs(q);
-
-	// 	const blogs: BlogWithId[] = [];
-	// 	querySnapshot.forEach((blog) => {
-	// 		blogs.push({ ...blog.data(), id: blog.id });
-	// 	});
-
-	// 	blogs.sort((a, b) => {
-	// 		if (a.createdAt > b.createdAt) return -1;
-	// 		if (a.createdAt < b.createdAt) return 1;
-	// 		return 0;
-	// 	});
-
-	// 	return { status: 200, props: { blogs } };
-	// };
-</script>
-
 <script lang="ts">
+	import { deleteDoc, onSnapshot, query, where } from 'firebase/firestore';
+	import { blogCollection, blogDoc } from '$lib/firebase';
+	import type { BlogWithId } from '$lib/types/blog';
 	import BlogCard from '$lib/blog/blog-card.svelte';
 	import type { Events } from '$lib/types/events';
 	import type { User } from 'firebase/auth';

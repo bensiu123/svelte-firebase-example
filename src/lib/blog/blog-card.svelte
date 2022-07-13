@@ -8,7 +8,7 @@
 	const dispatch = createEventDispatcher<Events>();
 
 	const editBlog = async () => {
-		await goto(`/admin/blog/update/${id}`);
+		await goto(`/admin/update-blog?id=${id}`);
 	};
 
 	const dispatchBlogDelete = () => {
@@ -22,7 +22,7 @@
 	</div>
 	<div class="content">
 		<p>{summary}</p>
-		<a href="/admin/blog/{id}">Read more</a>
+		<a href="/admin/blog-detail?id={id}">Read more</a>
 	</div>
 	<div class="button-set">
 		<button class="edit" on:click={editBlog}>Edit</button>
@@ -74,5 +74,8 @@
 		outline: none;
 		border: none;
 		color: white;
+	}
+	button {
+		cursor: pointer;
 	}
 </style>

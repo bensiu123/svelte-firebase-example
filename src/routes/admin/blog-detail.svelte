@@ -1,32 +1,28 @@
-<script lang="ts" context="module">
-	import { getDoc, onSnapshot } from 'firebase/firestore';
-	import { blogDoc } from '$lib/firebase';
-	import type { Load } from '@sveltejs/kit';
-	import type { BlogWithId } from '$lib/types/blog';
-
-	export const load: Load<{ id: string }, { blog: BlogWithId | null }> = async ({ params }) => {
-		const { id } = params;
-		if (!id || typeof id !== 'string') return { status: 302, redirect: '/admin' };
-
-		const docSnap = await getDoc(blogDoc(id));
-		if (!docSnap.exists()) {
-			return { status: 404, props: { blog: null } };
-		}
-
-		return { status: 200, props: { blog: { ...docSnap.data(), id: docSnap.id } } };
-	};
-</script>
-
 <script lang="ts">
-	export let blog: BlogWithId | null = null;
-	if (blog) {
-		const doc = blogDoc(blog?.id);
-		onSnapshot(doc, (snap) => {
+	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
+	import { blogDoc } from '$lib/firebase';
+	import { onSnapshot } from 'firebase/firestore';
+	import type { BlogWithId } from '$lib/types/blog';
+	import { onMount } from 'svelte';
+
+	let blog: BlogWithId | null = null;
+
+	const subscribeToBlog = async (id: string) => {
+		const doc = blogDoc(id);
+		return onSnapshot(doc, (snap) => {
 			if (snap.exists()) {
 				blog = { ...snap.data(), id: snap.id };
 			}
 		});
-	}
+	};
+
+	onMount(() => {
+		const id = $page.url.searchParams.get('id');
+
+		if (!id) return goto('/admin');
+		return subscribeToBlog(id);
+	});
 </script>
 
 <svelte:head>
