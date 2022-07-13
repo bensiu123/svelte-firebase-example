@@ -11,7 +11,15 @@ const config = {
 	preprocess: preprocess(),
 
 	kit: {
-		adapter: adapter({ out: 'build' })
+		adapter: adapter({
+			pages: 'public',
+			assets: 'public',
+			fallback: null,
+			precompress: false
+		}),
+		prerender: {
+			default: true
+		}
 	}
 };
 

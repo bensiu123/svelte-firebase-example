@@ -11,7 +11,9 @@
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check --plugin-search-dir=. . && eslint .",
-		"format": "prettier --write --plugin-search-dir=. ."
+		"format": "prettier --write --plugin-search-dir=. .",
+		"predeploy": "npm run build",
+		"deploy": "firebase deploy"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.22.2",
@@ -39,6 +41,7 @@
 	"type": "module",
 	"dependencies": {
 		"firebase": "^9.8.4",
-		"lodash-es": "^4.17.21"
+		"lodash-es": "^4.17.21",
+		"normalize.css": "^8.0.1"
 	}
 }

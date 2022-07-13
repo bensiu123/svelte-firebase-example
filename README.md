@@ -17,6 +17,7 @@ In this project, `carbon-components-svelte` is used as UI component library.
 - Store user profile in firestore
 - CRUD blog post in firestore
 - realtime update blog post list and details from firestore
+- deployed to Firebase Hosting with Static-site Generation
 
 ## Getting Started
 
@@ -35,7 +36,7 @@ npm run dev
 
 ## To-do
 
-- deploy on Firebase Hosting (static) or Functions (SSR)
+- [x] deploy on Firebase Hosting (static) or Functions (SSR)
 
 ## Comments on Svelte and Svelte-kit
 
@@ -44,6 +45,7 @@ npm run dev
 - Default global state management: `store`, which is an observable. It is easier to understand than `redux`.
 - Child to parent communication with `createEventDispatcher` is easy to understand. React with TypeScript can do similar thing but defining the type of props. But Svelte's syntax is easier to follow, especially when using the components written but others.
 - Animation and transition is easy to handle.
+- css isolation is great compared with React. css in each `.svelte` file is isolated. On the other hand, `.module.css` can only isolate css with class name selector.
 - It is a mature framework, with almost everything you needed to build a modern web app. Except that the community (and package library) may not be large enough.
 
 - VS Code reference lookup is not yet supported in `.svelte` files.
