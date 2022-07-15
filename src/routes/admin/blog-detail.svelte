@@ -13,6 +13,7 @@
 		return onSnapshot(doc, (snap) => {
 			if (snap.exists()) {
 				blog = { ...snap.data(), id: snap.id };
+				console.log(blog);
 			}
 		});
 	};

@@ -3,37 +3,61 @@ import {
 	setDoc,
 	type DocumentData,
 	type DocumentReference,
-	type Unsubscribe
+	getDoc
 } from 'firebase/firestore';
-import { writable, type Updater, type Writable } from 'svelte/store';
+import {
+	get,
+	type Subscriber,
+	type Unsubscriber,
+	writable,
+	type Updater,
+	type Writable
+} from 'svelte/store';
 
-export class FireDoc<T extends DocumentData> implements Writable<T> {
+export class FireDoc<D extends DocumentData, T = D | undefined> implements Writable<T> {
+	private _document: DocumentReference<T>;
+	private readonly store: Writable<T> = writable<T>();
+
 	constructor(readonly document: DocumentReference<T>) {
-		this._unsubscribe = onSnapshot(document, (snap) => {
+		this._document = document;
+		getDoc(document).then((snap) => {
 			if (snap.exists()) {
-				this.snapshot = snap.data();
 				this.store.set(snap.data());
 			}
 		});
 	}
 
-	private _set(data: Partial<T>) {
+	set(data: Partial<T>) {
+		/** update local */
+		const value = get(this.store);
+		this.store.set({ ...data, ...value });
+
+		/** update firestore */
 		setDoc(this.document, data, { merge: true });
 	}
 
-	private _update(updater: Updater<T>) {
-		if (!this.snapshot) return;
-		const data = updater(this.snapshot);
+	update(updater: Updater<T>) {
+		/** update local */
+		this.store.update(updater);
+
+		/** update firestore */
+
+		const data = updater(get(this.store));
 		setDoc(this.document, data, { merge: true });
 	}
 
-	private snapshot: T | undefined;
-	private readonly store: Writable<T> = writable<T>();
-	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	private _unsubscribe: Unsubscribe = () => {};
+	subscribe(run: Subscriber<T>, invalidate?: (value?: T) => void): Unsubscriber {
+		const unsubscribeFirestore = onSnapshot(this._document, (snap) => {
+			if (snap.exists()) {
+				this.store.set(snap.data());
+			}
+		});
+		const unsubscribe = this.store.subscribe(run, invalidate);
+		return () => {
+			unsubscribeFirestore();
+			unsubscribe();
+		};
+	}
 
-	public readonly subscribe = this.store.subscribe;
-	public readonly set = this._set;
-	public readonly update = this._update;
-	public readonly unsubscribe = this._unsubscribe;
+	public readonly value = get(this.store);
 }

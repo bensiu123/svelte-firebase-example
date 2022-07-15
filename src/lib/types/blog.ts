@@ -8,6 +8,7 @@ export type Blog = {
 	owner: UserInfo['uid'];
 	createdAt: FieldValue; // timestamp
 	updatedAt: FieldValue; // timestamp
+	date?: Date;
 };
 
 export type BlogWithId = Blog & { id: string };

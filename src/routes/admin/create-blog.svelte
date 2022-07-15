@@ -18,7 +18,8 @@
 			description,
 			owner: currentUser.uid,
 			createdAt: timestamp,
-			updatedAt: timestamp
+			updatedAt: timestamp,
+			date: new Date()
 		};
 		await addDoc(blogCollection, blog);
 		goto('/admin');
